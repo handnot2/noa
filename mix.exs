@@ -1,7 +1,7 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "0.2.1"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
 
@@ -42,7 +42,6 @@ defmodule Noa.Mixfile do
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
      {:excoveralls, "~> 0.6", only: :test},
-     {:ecto, github: "elixir-ecto/ecto", ref: "945e154", override: true},
     ]
   end
 
