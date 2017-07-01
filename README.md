@@ -1,11 +1,11 @@
 # Noa
 
-OAuth2
+WIP ...
 
 ## Installation
 
 ```elixir
 def deps do
-  [{:noa, "~> 0.1.0"}]
+  [{:noa, "~> 0.2.0"}]
 end
 ```
