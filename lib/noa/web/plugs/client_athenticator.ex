@@ -9,7 +9,8 @@ defmodule Noa.Web.Plugs.ClientAuthenticator do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    %{"client_id" => client_id, "secret" => secret} = conn.params
+    client_id = Map.get(conn.params, "client_id", "")
+    secret = Map.get(conn.params, "client_secret", "")
     case Clients.lookup(client_id) do
       %Client{} = client ->
         case Bcrypt.checkpw(secret, client.secret_hash) do
