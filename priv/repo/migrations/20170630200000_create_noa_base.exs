@@ -21,7 +21,6 @@ defmodule Noa.Repo.Migrations.CreateNoaBase do
       add :id, :uuid, primary_key: true
       add :name, :string
       add :secret_hash, :string
-      add :enc_token_secret, :text
       add :scope, :text
       add :uris, {:array, :text}
 
@@ -33,9 +32,9 @@ defmodule Noa.Repo.Migrations.CreateNoaBase do
     create table(:resources, primary_key: false) do
      add :id, :uuid, primary_key: true
      add :name, :string
+     add :secret_hash, :string
      add :scope, :text
-     add :owner_id, :uuid
-     add :enc_token_secret, :text
+     add :provider_id, :string
 
      timestamps()
     end

@@ -9,20 +9,23 @@ defmodule Noa.Web.Plugs.ClientAuthenticator do
   def init(opts), do: opts
 
   def call(conn, _opts) do
-    client_id = Map.get(conn.params, "client_id", "")
-    secret = Map.get(conn.params, "client_secret", "")
-    case Clients.lookup(client_id) do
-      %Client{} = client ->
-        case Bcrypt.checkpw(secret, client.secret_hash) do
-          true -> conn |> add_to_ctxt(client)
-          _    -> conn |> send_resp(401, ~s({"error": "invalid_client"})) |> halt()
-        end
-      _ ->
-        Bcrypt.dummy_checkpw()
-        conn |> send_resp(401, ~s({"error": "invalid_client"})) |> halt()
-    end
+    client_id = Map.get(conn.params, "client_id")
+    client_secret = Map.get(conn.params, "client_secret")
+    client = authenticated_client(client_id, client_secret)
+    if client, do: conn |> add_to_ctxt(client), else: conn
   rescue
     _ -> conn |> send_resp(500, ~s({"error": "server_error"})) |> halt()
+  end
+
+  defp authenticated_client(nil, nil), do: nil
+  defp authenticated_client(id, secret) do
+    case Clients.lookup(id || "") do
+      %Client{} = client ->
+        if Bcrypt.checkpw(secret || "", client.secret_hash),
+          do: client,
+        else: nil
+      _ -> Bcrypt.dummy_checkpw(); nil
+    end
   end
 
   defp add_to_ctxt(conn, client) do

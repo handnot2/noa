@@ -8,7 +8,6 @@ defmodule Noa.Actors.Client do
   schema "clients" do
     field :name, :string
     field :secret_hash, :string
-    field :enc_token_secret, :string
     field :scope, :string, default: ""
     field :uris, {:array, :string}, default: []
     timestamps()
@@ -31,12 +30,6 @@ defmodule Noa.Actors.Client do
     |> Changeset.validate_length(:name, min: 5, max: 125)
     |> Changeset.validate_change(:uris, &validate_uris/2)
     |> validate_secret(Map.get(attrs, "secret"), required: false)
-  end
-
-  def update_token_secret_cs(res, secret) do
-    #TODO: attrs = %{"enc_token_secret" => Vault.encrypt("clients", secret)}
-    attrs = %{"enc_token_secret" => secret}
-    res |> Changeset.cast(attrs, [:enc_token_secret])
   end
 
   defp validate_uris(:uris, uris) do

@@ -1,7 +1,7 @@
 defmodule Noa.Tokens.ACGrant do
   alias Ecto.{Changeset, Multi}
-  alias Noa.Tokens.{AC, AT, RT}
-  alias Noa.{Repo}
+  alias Noa.Tokens.{AC, AT, RT, Scopes}
+  alias Noa.{Repo, Actors.Providers}
 
   @spec issue_access_token(AC.t) :: {:ok, AT.t, nil | RT.t} | {:error, atom}
   def issue_access_token(%AC{} = code) do
@@ -12,8 +12,18 @@ defmodule Noa.Tokens.ACGrant do
   end
 
   defp transaction_ops(%AC{} = code) do
+    scope_master_list = code.provider_id
+    |>  Providers.lookup()
+    |>  Scopes.get_all()
+
+    computed_scope = code.scope
+    |>  String.split()
+    |>  MapSet.new()
+    |>  MapSet.intersection(scope_master_list)
+    |>  Enum.join(" ")
+
     attrs = %{provider_id: code.provider_id, issued_to: code.issued_to,
-              authz_code_id: code.id,  scope: code.scope}
+              authz_code_id: code.id,  scope: computed_scope}
     cs = %RT{} |> RT.create_cs(attrs)
     Multi.new()
     |> Multi.insert(:refresh_token, cs)
