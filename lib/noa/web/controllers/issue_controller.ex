@@ -2,7 +2,7 @@ defmodule Noa.Web.IssueController do
   use Noa.Web, :controller
   action_fallback Noa.Web.FallbackController
 
-  alias Noa.Tokens.{StubHandler, AC, AT, RT}
+  alias Noa.Tokens.{StubHandler, Scopes, AC, AT, RT}
   alias Noa.{Actors.Registrar, Tokens}
   alias Noa.Web.{TokenUtils}
 
@@ -65,13 +65,13 @@ defmodule Noa.Web.IssueController do
 
   @spec validated_scope(binary, map) :: {:ok, binary} | {:error, atom, binary}
   defp validated_scope("", noa_ctxt), do: noa_ctxt[:client].scope
-  defp validated_scope(scope, %{provider: %{scope: prov_scope}}) do
-    if valid_scope?(scope, prov_scope), do: {:ok, scope}, else: {:error, :invalid_scope}
+  defp validated_scope(scope, %{provider: prov}) do
+    prov_scopes = Scopes.get_all(prov)
+    if valid_scope?(scope, prov_scopes), do: {:ok, scope}, else: {:error, :invalid_scope}
   end
 
   defp valid_scope?(scope, available_scopes) do
-    available = available_scopes |> String.split() |> MapSet.new()
-    scope |> String.split() |> MapSet.new() |> MapSet.subset?(available)
+    scope |> String.split() |> MapSet.new() |> MapSet.subset?(available_scopes)
   end
 
   defp issue_resp_at(%{} = resp, %AT{} = at) do
