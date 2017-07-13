@@ -11,10 +11,18 @@ defmodule Noa.Web.Plugs.ProviderLoader do
     %{"provider_id" => provider_id} = conn.path_params
     case Providers.lookup(provider_id) do
       %Provider{} = provider -> conn |> add_to_ctxt(provider)
-      _ -> conn |> send_resp(400, ~s({"error": "invalid_request"})) |> halt()
+      _ ->
+        conn
+        |>  put_resp_header("content-type", "application/json")
+        |>  send_resp(400, ~s({"error": "invalid_request"}))
+        |>  halt()
     end
   rescue
-    _ -> conn |> send_resp(500, ~s({"error": "server_error"})) |> halt()
+    _ ->
+      conn
+      |>  put_resp_header("content-type", "application/json")
+      |>  send_resp(500, ~s({"error": "server_error"}))
+      |>  halt()
   end
 
   defp add_to_ctxt(conn, provider) do

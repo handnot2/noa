@@ -14,7 +14,11 @@ defmodule Noa.Web.Plugs.ResourceAuthenticator do
     res = authenticated_resource(resource_id, resource_secret)
     if res, do: conn |> add_to_ctxt(res), else: conn
   rescue
-    e -> conn |> send_resp(500, ~s({"error": "server_error #{inspect e}"})) |> halt()
+    e ->
+      conn
+      |>  put_resp_header("content-type", "application/json")
+      |>  send_resp(500, ~s({"error": "server_error #{inspect e}"}))
+      |>  halt()
   end
 
   defp authenticated_resource(nil, nil), do: nil

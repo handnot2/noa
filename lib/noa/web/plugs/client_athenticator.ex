@@ -14,7 +14,11 @@ defmodule Noa.Web.Plugs.ClientAuthenticator do
     client = authenticated_client(client_id, client_secret)
     if client, do: conn |> add_to_ctxt(client), else: conn
   rescue
-    _ -> conn |> send_resp(500, ~s({"error": "server_error"})) |> halt()
+    _ ->
+      conn
+      |>  put_resp_header("content-type", "application/json")
+      |>  send_resp(500, ~s({"error": "server_error"}))
+      |>  halt()
   end
 
   defp authenticated_client(nil, nil), do: nil

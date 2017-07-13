@@ -10,7 +10,10 @@ defmodule Noa.Web.Plugs.EnsureAuthenticated do
     if opts |> Enum.any?(&(Map.has_key?(noa_ctxt, &1))) do
       conn
     else
-      conn |> send_resp(401, ~s({"error": "invalid_client"})) |> halt()
+      conn
+      |>  put_resp_header("content-type", "application/json")
+      |>  send_resp(401, ~s({"error": "invalid_client"}))
+      |>  halt()
     end
   end
 end
