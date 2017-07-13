@@ -1,7 +1,7 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.3.0"
+  @version "0.4.0"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
 
@@ -34,14 +34,16 @@ defmodule Noa.Mixfile do
   defp elixirc_paths(_),     do: ["lib"]
 
   defp deps do
-    [{:phoenix, "~> 1.3.0-rc"},
-     {:phoenix_pubsub, "~> 1.0"},
-     {:phoenix_ecto, "~> 3.2"},
-     {:postgrex, ">= 0.0.0"},
-     {:comeonin, "~> 3.0"},
-     {:gettext, "~> 0.11"},
-     {:cowboy, "~> 1.0"},
-     {:excoveralls, "~> 0.6", only: :test},
+    [
+      {:phoenix, "~> 1.3.0-rc"},
+      {:phoenix_pubsub, "~> 1.0"},
+      {:phoenix_ecto, "~> 3.2"},
+      {:postgrex, ">= 0.0.0"},
+      {:comeonin, "~> 3.0"},
+      {:gettext, "~> 0.11"},
+      {:cowboy, "~> 1.0"},
+      {:yaml_elixir, "~> 1.3", only: :test},
+      {:excoveralls, "~> 0.6", only: :test},
     ]
   end
 
