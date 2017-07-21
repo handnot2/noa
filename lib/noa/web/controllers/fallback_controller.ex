@@ -1,4 +1,6 @@
 defmodule Noa.Web.FallbackController do
+  @moduledoc false
+
   use Noa.Web, :controller
 
   @error_to_http_status %{

@@ -1,4 +1,6 @@
 defmodule Noa.Tokens.OpaqueStubHandler do
+  @moduledoc false
+
   @behaviour Noa.Tokens.StubHandler
   alias Plug.Crypto.MessageVerifier
 

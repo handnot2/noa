@@ -1,4 +1,6 @@
 defmodule Noa.Actors.Providers do
+  @moduledoc false
+
   alias Ecto.{Changeset, Schema}
   alias Noa.{Repo, Actors.Provider}
 

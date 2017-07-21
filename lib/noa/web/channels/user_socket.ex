@@ -1,4 +1,6 @@
 defmodule Noa.Web.UserSocket do
+  @moduledoc false
+
   use Phoenix.Socket
 
   ## Channels

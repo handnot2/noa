@@ -1,7 +1,5 @@
 defmodule Noa.Web.ErrorHelpers do
-  @moduledoc """
-  Conveniences for translating and building error messages.
-  """
+  @moduledoc false
 
   @doc """
   Translates an error message using gettext.

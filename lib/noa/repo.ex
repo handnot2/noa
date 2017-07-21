@@ -1,4 +1,6 @@
 defmodule Noa.Repo do
+  @moduledoc false
+
   use Ecto.Repo, otp_app: :noa
 
   @doc """

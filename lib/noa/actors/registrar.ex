@@ -1,4 +1,6 @@
 defmodule Noa.Actors.Registrar do
+  @moduledoc false
+
   alias Ecto.Changeset
   alias Noa.Tokens.{AC, AT, RT, ACGrant, RTGrant, CCGrant}
   alias Noa.{Repo, Tokens}

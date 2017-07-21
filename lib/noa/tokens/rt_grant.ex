@@ -1,4 +1,6 @@
 defmodule Noa.Tokens.RTGrant do
+  @moduledoc false
+
   alias Ecto.Multi
   alias Noa.Tokens.{AT, RT}
   alias Noa.{Repo}

@@ -1,4 +1,6 @@
 defmodule Noa.Web.ErrorView do
+  @moduledoc false
+
   use Noa.Web, :view
 
   def render("404.json", _assigns) do

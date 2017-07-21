@@ -1,4 +1,6 @@
 defmodule Noa.Actors.Clients do
+  @moduledoc false
+
   alias Ecto.{Changeset, Schema, UUID}
   alias Noa.{Repo, Actors.Client}
 

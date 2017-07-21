@@ -1,4 +1,6 @@
 defmodule Noa.Web.ChangesetView do
+  @moduledoc false
+
   use Noa.Web, :view
 
   @doc """

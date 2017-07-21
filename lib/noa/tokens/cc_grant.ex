@@ -1,4 +1,6 @@
 defmodule Noa.Tokens.CCGrant do
+  @moduledoc false
+
   alias Ecto.Multi
   alias Noa.Tokens.{AT, RT, Scopes}
   alias Noa.{Repo, Actors.Providers}

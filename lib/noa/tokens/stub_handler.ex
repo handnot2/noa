@@ -1,4 +1,6 @@
 defmodule Noa.Tokens.StubHandler do
+  @moduledoc false
+
   @type opts ::	binary | tuple | atom | integer | float | [opts] | %{opts => opts}
 
   @callback init(opts) :: opts | no_return

@@ -1,4 +1,6 @@
 defmodule Noa.Web.Router do
+  @moduledoc false
+
   use Noa.Web, :router
 
   pipeline :api do

@@ -1,4 +1,6 @@
 defmodule Noa.Tokens.ACGrant do
+  @moduledoc false
+
   alias Ecto.{Changeset, Multi}
   alias Noa.Tokens.{AC, AT, RT, Scopes}
   alias Noa.{Repo, Actors.Providers}

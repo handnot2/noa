@@ -1,4 +1,6 @@
 defmodule Noa.Tokens.Scopes do
+  @moduledoc false
+
   alias Noa.Actors.{Resource, Resources, Provider}
 
   def get(%Resource{} = resource), do: get(resource, MapSet.new())

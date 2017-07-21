@@ -1,4 +1,6 @@
 defmodule Noa.Web.TokenUtils do
+  @moduledoc false
+
   alias Noa.Tokens
   alias Noa.Tokens.{AC, AT, RT, StubHandler}
 

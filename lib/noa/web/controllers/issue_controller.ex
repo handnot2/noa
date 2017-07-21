@@ -1,4 +1,6 @@
 defmodule Noa.Web.IssueController do
+  @moduledoc false
+
   use Noa.Web, :controller
   action_fallback Noa.Web.FallbackController
 
