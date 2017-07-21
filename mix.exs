@@ -1,7 +1,7 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.4.0"
+  @version "0.4.1-alpha"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
 
