@@ -1,0 +1,49 @@
+<div class="consent-box">
+  <div class="row">
+    <form method="POST"
+          style="margin: auto;"
+          action="<%= @consent_uri %>">
+      <div class="twelve columns">
+        <h4>Authorize Access</h4>
+        <p>
+          Application <span class="grantee"><%= @client_name %></span>
+          is requesting access.
+          (<a href="#">Terms</a> and <a href="#">Privacy Policy</a>)
+        </p>
+        <p>
+        Ensure that your trust this application before authorizing this
+        request. You can revoke this access authorization anytime
+        using your account settings.
+        </p>
+      </div>
+      <div class="twelve columns">
+        <input type="hidden" name="_csrf_token"
+               value="<%= get_csrf_token() %>">
+        <span class="u-pull-right">
+          <button name="authorization" value="rejected"
+                  type="submit"
+                  class="u-max-full-width reject">
+            Deny
+          </button>
+          <button name="authorization" value="authorized"
+                  type="submit"
+                  class="button-primary u-max-full-width">
+            Allow
+          </button>
+        </span>
+      </div>
+    </form>
+  </div>
+  <div class="row">
+    This application would like to:
+    <div class="grants-box">
+      <table class="u-full-width">
+        <tbody>
+          <%= for s <- @scopes do %>
+            <tr><td><%= s %></td></tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

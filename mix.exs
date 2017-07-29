@@ -1,7 +1,7 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.5.0-alpha"
+  @version "0.6.0-alpha"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
 
@@ -35,14 +35,17 @@ defmodule Noa.Mixfile do
 
   defp deps do
     [
-      {:phoenix, "~> 1.3.0-rc"},
+      {:phoenix, "~> 1.3.0"},
       {:phoenix_pubsub, "~> 1.0"},
       {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_html, "~> 2.10"},
+      {:phoenix_live_reload, "~> 1.0", only: :dev},
       {:postgrex, ">= 0.0.0"},
       {:comeonin, "~> 3.0"},
       {:gettext, "~> 0.11"},
-      {:cowboy, "~> 1.0"},
-      {:yaml_elixir, "~> 1.3", only: :test},
+      {:cowboy, "~> 1.1"},
+      {:ueberauth, "~> 0.4"},
+      {:yaml_elixir, "~> 1.3", only: [:dev, :test]},
       {:excoveralls, "~> 0.6", only: :test},
       {:ex_doc, "~> 0.16", only: :dev},
     ]

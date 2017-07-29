@@ -1,0 +1,38 @@
+<div class="login-box">
+  <form method="POST"
+        style="margin: auto;"
+        action="<%= Noa.Web.Router.Helpers.signin_path(Noa.Web.Endpoint, :signin) %>">
+    <div class="row"><h4 style="text-align: center;">Login</h4></div>
+    <div class="row">
+      <label for="username">Username</label>
+      <input class="u-full-width"
+             value="<%= @params["username"] %>"
+             placeholder="your@email.address"
+             name="username" id="username" type="email">
+    </div>
+    <div class="row">
+      <label for="pswd">Password</label>
+      <input class="u-full-width" placeholder="password..."
+             name="pswd" id="pswd" type="password">
+      <input type="hidden" name="_csrf_token"
+             value="<%= get_csrf_token() %>">
+      <input type="hidden" name="target_url"
+            value="<%= @params["target_url"] %>">
+      <input type="hidden" name="state"
+             value="<%= @params["state"] %>">
+    </div>
+    <div class="row">
+      <%= if assigns[:error_msg] != nil do %>
+        <div class="error"><%= @error_msg %></div>
+      <% else %>
+        <div>&nbsp;</div>
+      <% end %>
+    </div>
+    <div clsss="row">
+      <button class="button-primary u-full-width"
+              name="signin" value="signin" type="submit">
+        Sign in
+      </button>
+    </div>
+  </form>
+</div>

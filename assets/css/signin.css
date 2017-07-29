@@ -1,0 +1,91 @@
+/* This file is for your main application css. */
+.login-box {
+  height: 300px;
+  width: 274px;
+  background-color: #f7f7f7;
+  padding: 10px 20px 10px 20px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  border-radius: 2px 2px 2px 2px;
+  margin: 50vh auto 0;
+  transform: translateY(-50%);
+}
+
+.consent-box {
+  width: 75%;
+  background-color: #f7f7f7;
+  padding: 10px 20px 10px 20px;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  border-radius: 2px 2px 2px 2px;
+  margin: 50vh auto 0;
+  transform: translateY(-50%);
+}
+
+.grants-box tr:last-child td {
+  border-bottom: none;
+}
+
+.grants-box {
+  background-color: #fffffd;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-top: 8px;
+  border-radius: 4px 4px 4px 4px;
+}
+
+.error {
+  color: #cc0000;
+}
+
+.reject:hover {
+  background-color: #ffa089;
+  border-color: #ffa089;
+}
+
+button.button-primary {
+  color: #ffffff;
+  background-color: #1895f1;
+  border-color: #1895f1;
+}
+
+button.button-primary:hover {
+  color: #ffffff;
+  background-color: #0b73c1;
+  border-color: #0b73c1;
+}
+
+.grantee {
+  display: inline-block;
+  font-weight: bold;
+  vertical-align: baseline;
+  padding: 0 5px 0 5px;
+  border-radius: 3px 3px 3px 3px;
+  border-color: #fffffd;
+  border-style: solid;
+  background-color: #fffffd;
+}
+
+.tag-label {
+  display: inline-block;
+  padding: 3px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 2px;
+  background-color: #ffcccc;
+  box-shadow: inset 0 -1px 0 rgba(27,31,35,0.12);
+  vertical-align: text-top !important;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+@media (min-width:  400px) {.login-box { width: 75%; }}
+@media (min-width:  550px) {.login-box { width: 65%; }}
+@media (min-width:  750px) {.login-box { width: 60%; }}
+@media (min-width: 1000px) {.login-box { width: 45%; }}
+@media (min-width: 1200px) {.login-box { width: 35%; }}
+
+@media (min-width:  400px) {.consent-box { width: 85%; }}
+@media (min-width:  550px) {.consent-box { width: 75%; }}
+@media (min-width:  750px) {.consent-box { width: 70%; }}
+@media (min-width: 1000px) {.consent-box { width: 65%; }}
+@media (min-width: 1200px) {.consent-box { width: 50%; }}

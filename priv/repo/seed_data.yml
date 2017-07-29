@@ -1,0 +1,50 @@
+providers:
+  - name: provider1
+    desc: Authorization Provider 1
+    scope: p1_read p1_write p1_delete
+
+  - name: provider2
+    desc: Authorization Provider 2
+    scope: p2_read p2_write p2_delete
+
+resources:
+  - name: resource1
+    provider: provider1
+    scope: rs1:perm1 rs1:perm2 rs1:perm3
+
+  - name: resource2
+    provider: provider1
+    scope: rs2:perm1 rs2:perm2 rs2:perm3
+
+  - name: resource3
+    provider: provider2
+    scope: rs3:perm1 rs3:perm2 rs3:perm3
+
+  - name: resource4
+    provider: provider2
+    scope: rs4:perm1 rs4:perm2 rs4:perm3
+
+clients:
+  - name: rs1client1
+    scope: p1_read p1_write rs1:perm1 rs1:perm2
+    uris:
+      - http://rs1client1.app/cb1
+      - http://rs1client1.app/cb2
+
+  - name: rs2client2
+    scope: p1_read rs2:perm2 rs2:perm3
+    uris:
+      - http://rs2client2.app/cb1
+      - http://rs2client2.app/cb2
+
+  - name: rs3client3
+    scope: p2_read p2_write rs3:perm1 rs3:perm2
+    uris:
+      - http://rs3client3.app/cb1
+      - http://rs3client3.app/cb2
+
+  - name: rs4client4
+    scope: p2_read rs4:perm2 rs4:perm3
+    uris:
+      - http://rs4client4.app/cb1
+      - http://rs4client4.app/cb2
