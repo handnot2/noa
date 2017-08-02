@@ -1,5 +1,5 @@
-defmodule Noa.Web.IssueControllerTest do
-  use Noa.Web.ConnCase
+defmodule NoaWeb.IssueControllerTest do
+  use NoaWeb.ConnCase
   alias Noa.Tokens.{Scopes}
   import Noa.{NoaHelper}
 

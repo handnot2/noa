@@ -6,6 +6,6 @@ WIP ...
 
 ```elixir
 def deps do
-  [{:noa, "~> 0.4.1-alpha"}]
+  [{:noa, "~> 0.6.5-alpha"}]
 end
 ```

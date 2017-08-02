@@ -18,9 +18,9 @@ defmodule Noa.NoaHelper do
           clients: ctxt[:clients])
   end
 
-  def pr1(ctxt), do: get_in(ctxt, [:providers, "provider1"])
-  def cl1(ctxt), do: get_in(ctxt, [:clients, "rs1client1"])
-  def rs1(ctxt), do: get_in(ctxt, [:resources, "resource1"])
+  def pr1(ctxt), do: get_in(ctxt, [:providers, "test_provider1"])
+  def cl1(ctxt), do: get_in(ctxt, [:clients, "test_rs1client1"])
+  def rs1(ctxt), do: get_in(ctxt, [:resources, "test_resource1"])
 
   def issue_code(pr, cl, res_owner) do
     claims = claims(pr, cl, res_owner)
@@ -81,7 +81,7 @@ defmodule Noa.NoaHelper do
   end
 
   defp load_test_data_desc() do
-    [data_desc] = YamlElixir.read_all_from_file("test/data_desc.yaml")
+    [data_desc] = YamlElixir.read_all_from_file("priv/repo/test_seed_data.yml")
     %{"data_desc" => data_desc}
   end
 

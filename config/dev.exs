@@ -6,8 +6,14 @@ use Mix.Config
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
-config :noa, Noa.Web.Endpoint,
-  http: [port: 4000],
+config :noa, NoaWeb.Endpoint,
+  http: [port: 5008],
+  #https: [
+    #port: 4443,
+    #otp_app: :noa,
+    #keyfile: "priv/ssl/key.pem",
+    #certfile: "priv/ssl/cert.pem",
+  #],
   debug_errors: true,
   code_reloader: true,
   check_origin: false,
@@ -29,6 +35,16 @@ config :noa, Noa.Web.Endpoint,
 # If desired, both `http:` and `https:` keys can be
 # configured to run both http and https servers on
 # different ports.
+
+config :noa, NoaWeb.Endpoint,
+  live_reload: [
+    patterns: [
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      ~r{priv/gettext/.*(po)$},
+      ~r{lib/noa_web/views/.*(ex)$},
+      ~r{lib/noa_web/templates/*.(eex)$}
+    ]
+  ]
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

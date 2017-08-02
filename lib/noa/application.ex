@@ -15,12 +15,17 @@ defmodule Noa.Application do
       # Start the Ecto repository
       supervisor(Noa.Repo, []),
       # Start the endpoint when the application starts
-      supervisor(Noa.Web.Endpoint, []),
+      supervisor(NoaWeb.Endpoint, []),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Noa.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  def config_change(changed, _new, removed) do
+    NoaWeb.Endpoint.config_change(changed, removed)
+    :ok
   end
 end

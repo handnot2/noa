@@ -2,7 +2,7 @@ use Mix.Config
 
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
-config :noa, Noa.Web.Endpoint,
+config :noa, NoaWeb.Endpoint,
   http: [port: 4000],
   server: false
 

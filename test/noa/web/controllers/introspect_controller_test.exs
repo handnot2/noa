@@ -1,5 +1,5 @@
-defmodule Noa.Web.IntrospectControllerTest do
-  use Noa.Web.ConnCase
+defmodule NoaWeb.IntrospectControllerTest do
+  use NoaWeb.ConnCase
   import Noa.{NoaHelper}
 
   setup %{conn: conn} do

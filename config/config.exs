@@ -10,10 +10,10 @@ config :noa,
   ecto_repos: [Noa.Repo]
 
 # Configures the endpoint
-config :noa, Noa.Web.Endpoint,
+config :noa, NoaWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "Hv9rzU8jgunIUg/6Pgmg9JMWy7TVn8MmhdJq84QZHysijgVUxNzNKRAiy+jVQS9i",
-  render_errors: [view: Noa.Web.ErrorView, accepts: ~w(json)],
+  render_errors: [view: NoaWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: Noa.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -23,10 +23,16 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :ueberauth, Ueberauth,
-  base_path: "/idrp",
+  base_path: "/as/v1/idrp",
   providers: [
-    noa: {Noa.Web.NoaStrategy, []},
+    noa: {NoaWeb.NoaStrategy, []},
   ]
+
+config :mime, :types, %{
+  "application/x-www-form-urlencoded" => ["urlencoded"]
+}
+
+config :mix_docker, image: "noa"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

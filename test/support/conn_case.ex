@@ -1,4 +1,4 @@
-defmodule Noa.Web.ConnCase do
+defmodule NoaWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,10 +19,10 @@ defmodule Noa.Web.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      import Noa.Web.Router.Helpers
+      import NoaWeb.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint Noa.Web.Endpoint
+      @endpoint NoaWeb.Endpoint
     end
   end
 
