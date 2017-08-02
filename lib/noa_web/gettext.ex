@@ -1,4 +1,4 @@
-defmodule Noa.Web.Gettext do
+defmodule NoaWeb.Gettext do
   @moduledoc false
 
   use Gettext, otp_app: :noa

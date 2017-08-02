@@ -1,7 +1,7 @@
-defmodule Noa.Web.FallbackController do
+defmodule NoaWeb.FallbackController do
   @moduledoc false
 
-  use Noa.Web, :controller
+  use NoaWeb, :controller
 
   @error_to_http_status %{
     invalid_request: 400,
@@ -17,7 +17,7 @@ defmodule Noa.Web.FallbackController do
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> render(Noa.Web.ChangesetView, "error.json", changeset: changeset)
+    |> render(NoaWeb.ChangesetView, "error.json", changeset: changeset)
   end
 
   def call(conn, {:error, ec}) when is_atom(ec) do

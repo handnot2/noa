@@ -1,26 +1,29 @@
-defmodule Noa.Web do
+defmodule NoaWeb do
   @moduledoc false
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: Noa.Web
+      use Phoenix.Controller, namespace: NoaWeb
       import Plug.Conn
-      import Noa.Web.Router.Helpers
-      import Noa.Web.Gettext
+      import NoaWeb.Router.Helpers
+      import NoaWeb.Gettext
     end
   end
 
   def view do
     quote do
-      use Phoenix.View, root: "lib/noa/web/templates",
-                        namespace: Noa.Web
+      use Phoenix.View, root: "lib/noa_web/templates",
+                        namespace: NoaWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
 
-      import Noa.Web.Router.Helpers
-      import Noa.Web.ErrorHelpers
-      import Noa.Web.Gettext
+      # Use all HTML functionality (forms, tag, etc)
+      use Phoenix.HTML
+
+      import NoaWeb.Router.Helpers
+      import NoaWeb.ErrorHelpers
+      import NoaWeb.Gettext
     end
   end
 
@@ -35,7 +38,7 @@ defmodule Noa.Web do
   def channel do
     quote do
       use Phoenix.Channel
-      import Noa.Web.Gettext
+      import NoaWeb.Gettext
     end
   end
 

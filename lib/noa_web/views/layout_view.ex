@@ -1,3 +1,5 @@
-defmodule Noa.Web.LayoutView do
-  use Noa.Web, :view
+defmodule NoaWeb.LayoutView do
+  @moduledoc false
+
+  use NoaWeb, :view
 end

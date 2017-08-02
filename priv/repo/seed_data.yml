@@ -30,6 +30,7 @@ clients:
     uris:
       - http://rs1client1.app/cb1
       - http://rs1client1.app/cb2
+      - http://localhost:5009/auth/noa/callback
 
   - name: rs2client2
     scope: p1_read rs2:perm2 rs2:perm3

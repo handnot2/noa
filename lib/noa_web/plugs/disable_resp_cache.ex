@@ -1,4 +1,4 @@
-defmodule Noa.Web.Plugs.DisableRespCache do
+defmodule NoaWeb.Plugs.DisableRespCache do
   @moduledoc false
 
   import Plug.Conn

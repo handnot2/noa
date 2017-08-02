@@ -1,3 +1,5 @@
-defmodule Noa.Web.ConsentView do
-  use Noa.Web, :view
+defmodule NoaWeb.ConsentView do
+  @moduledoc false
+
+  use NoaWeb, :view
 end

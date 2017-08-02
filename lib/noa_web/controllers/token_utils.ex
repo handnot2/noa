@@ -1,4 +1,4 @@
-defmodule Noa.Web.TokenUtils do
+defmodule NoaWeb.TokenUtils do
   @moduledoc false
 
   alias Noa.Tokens

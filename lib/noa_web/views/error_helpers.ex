@@ -1,9 +1,17 @@
-defmodule Noa.Web.ErrorHelpers do
+defmodule NoaWeb.ErrorHelpers do
   @moduledoc false
 
+  use Phoenix.HTML
+
   @doc """
-  Translates an error message using gettext.
+  Genrates tag for inlined form input errors.
   """
+  def error_tag(form, field) do
+    Enum.map(Keyword.get_values(form.errors, field), fn (error) ->
+      content_tag :span, translate_error(error), class: "help-block"
+    end)
+  end
+
   def translate_error({msg, opts}) do
     # Because error messages were defined within Ecto, we must
     # call the Gettext module passing our Gettext backend. We
@@ -19,9 +27,9 @@ defmodule Noa.Web.ErrorHelpers do
     #     dgettext "errors", "is invalid"
     #
     if count = opts[:count] do
-      Gettext.dngettext(Noa.Web.Gettext, "errors", msg, msg, count, opts)
+      Gettext.dngettext(NoaWeb.Gettext, "errors", msg, msg, count, opts)
     else
-      Gettext.dgettext(Noa.Web.Gettext, "errors", msg, opts)
+      Gettext.dgettext(NoaWeb.Gettext, "errors", msg, opts)
     end
   end
 end

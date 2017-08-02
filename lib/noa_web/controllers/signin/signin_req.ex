@@ -1,10 +1,10 @@
-defmodule Noa.Web.SigninReq do
+defmodule NoaWeb.SigninReq do
   @moduledoc false
 
   use Ecto.Schema
   import Ecto.Changeset
   alias Ecto.Changeset, as: CS
-  alias Noa.Web.{SigninReq}
+  alias NoaWeb.{SigninReq}
 
   embedded_schema do
     field :username
@@ -17,10 +17,13 @@ defmodule Noa.Web.SigninReq do
   @show_signin_required_fields [:target_url, :state]
   @show_signin_optional_fields [:username]
 
-  def show_signin_cs(%{} = params) do
+  def show_signin_cs(%{} = params, expected_state) do
     %SigninReq{}
     |> cast(params, @show_signin_required_fields ++ @show_signin_optional_fields)
     |> validate_required(@show_signin_required_fields, message: "missing")
+    |>  validate_change(:state, fn :state, state ->
+          if state == expected_state, do: [], else: [state: "mismatch"]
+        end)
   end
 
   @signin_fields [:username, :pswd, :target_url, :state]

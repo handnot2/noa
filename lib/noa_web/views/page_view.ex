@@ -1,3 +1,5 @@
-defmodule Noa.Web.PageView do
-  use Noa.Web, :view
+defmodule NoaWeb.PageView do
+  @moduledoc false
+
+  use NoaWeb, :view
 end

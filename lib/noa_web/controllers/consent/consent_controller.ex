@@ -1,7 +1,9 @@
-defmodule Noa.Web.ConsentController do
-  use Noa.Web, :controller
+defmodule NoaWeb.ConsentController do
+  @moduledoc false
 
-  import Noa.Web.Router.Helpers, only: [consent_path: 3]
+  use NoaWeb, :controller
+
+  import NoaWeb.Router.Helpers, only: [consent_path: 3]
   import Noa.Actors.Registrar, only: [issue_access_token: 1, issue_authorization_code: 1]
   alias Noa.Tokens
   alias Noa.Tokens.{AC, AT, StubHandler, Scopes}
@@ -17,9 +19,9 @@ defmodule Noa.Web.ConsentController do
 
     with  :ok <- stage_match(get_stage(conn)),
           :ok <- provider_match(noa_ctxt, provider),
-          {:ok, approval_scope_set} <- scope_for_approval(provider, scope_set)
+          {:ok, approval_scope_set} <- scope_for_approval(provider, scope_set, true)
     do
-      posturi = consent_path(Noa.Web.Endpoint, :show_consent, provider.id)
+      posturi = consent_path(NoaWeb.Endpoint, :show_consent, provider.id)
       approval_scope = approval_scope_set |> MapSet.to_list() |> Enum.join(" ")
       reqdata = Map.put(reqdata, :approval_scope, approval_scope)
       opts    = [params: params, scopes: approval_scope_set, client_name: client.name,
@@ -56,12 +58,12 @@ defmodule Noa.Web.ConsentController do
     do
       conn |> send_authz_response(reqdata)
     else
-      {:error, error} when error in [:stage_mismatch, :provider_mismatch] ->
-        desc = "ncc-4 #{inspect error}"
-        send_http_error_resp(conn, 403, %{error: :forbidden, error_description: desc})
       {:error, :access_denied} ->
         desc = "request rejected"
         send_authz_error_resp(conn, reqdata, %{error: "access_denied", error_description: desc})
+      {:error, error} when error in [:stage_mismatch, :provider_mismatch] ->
+        desc = "ncc-4 #{inspect error}"
+        send_http_error_resp(conn, 403, %{error: :forbidden, error_description: desc})
     end
   rescue
     error ->
@@ -98,8 +100,9 @@ defmodule Noa.Web.ConsentController do
 
   defp cleanup_session(conn) do
     conn
-    |>  delete_session("x-noa-az-ro")
-    |>  delete_session("x-noa-authz-req-data")
+    |>  configure_session(drop: true)
+    # |>  delete_session("x-noa-az-ro")
+    # |>  delete_session("x-noa-authz-req-data")
   end
 
   defp gen_code_token(conn, %{response_type: "code"} = reqdata) do
@@ -154,7 +157,7 @@ defmodule Noa.Web.ConsentController do
   defp query_or_fragment?(%{response_type: "code"}), do: :query
   defp query_or_fragment?(%{response_type: "token"}), do: :fragment
 
-  defp scope_for_approval(provider, requested_scope_set, ignore_unknown \\ true) do
+  defp scope_for_approval(provider, requested_scope_set, ignore_unknown) do
     approval_scope_set = MapSet.intersection(Scopes.get_all(provider), requested_scope_set)
     size = MapSet.size(approval_scope_set)
     if size == 0 || (ignore_unknown == false && MapSet.size(requested_scope_set) != size) do

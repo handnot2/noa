@@ -1,4 +1,4 @@
-defmodule Noa.Web.Plugs.ResourceAuthenticator do
+defmodule NoaWeb.Plugs.ResourceAuthenticator do
   @moduledoc false
 
   import Plug.Conn

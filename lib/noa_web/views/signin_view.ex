@@ -1,3 +1,5 @@
-defmodule Noa.Web.SigninView do
-  use Noa.Web, :view
+defmodule NoaWeb.SigninView do
+  @moduledoc false
+
+  use NoaWeb, :view
 end

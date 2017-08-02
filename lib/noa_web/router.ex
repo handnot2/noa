@@ -1,41 +1,8 @@
-defmodule Noa.Web.Router do
+defmodule NoaWeb.Router do
   @moduledoc false
 
-  use Noa.Web, :router
-
-  pipeline :api do
-    plug :accepts, ["json"]
-  end
-
-  pipeline :provider_loader do
-    plug Noa.Web.Plugs.ProviderLoader
-  end
-
-  pipeline :client_authenticator do
-    plug Noa.Web.Plugs.ClientAuthenticator
-    plug Noa.Web.Plugs.EnsureAuthenticated, [:client]
-  end
-
-  pipeline :introspect_authenticator do
-    plug Noa.Web.Plugs.ResourceAuthenticator
-    plug Noa.Web.Plugs.EnsureAuthenticated, [:resource, :client]
-  end
-
-  pipeline :disable_resp_caching do
-    plug Noa.Web.Plugs.DisableRespCache
-  end
-
-  pipeline :ueberauth do
-    plug Ueberauth
-  end
-
-  pipeline :idrp_guard do
-    plug Noa.Web.Plugs.IdrpGuard
-  end
-
-  pipeline :ro_auth_guard do
-    plug Noa.Web.Plugs.ROAuthGuard
-  end
+  use NoaWeb, :router
+  alias NoaWeb.Plugs
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -43,60 +10,76 @@ defmodule Noa.Web.Router do
     plug :fetch_flash
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug Plugs.DisableRespCache
   end
 
-  scope "/idrp", Noa.Web.Idrp do
-    pipe_through [:browser, :idrp_guard, :ueberauth]
-
-    get "/:provider", IdrpController, :request
-    get "/:provider/callback", IdrpController, :callback
+  pipeline :api do
+    plug :accepts, ["urlencoded", "json"]
+    plug Plugs.DisableRespCache
   end
 
-  scope "/idp", Noa.Web do
-    pipe_through [:browser, :disable_resp_caching]
+  pipeline :authorize do
+    plug Plugs.ProviderLoader
+  end
 
+  pipeline :issue do
+    plug Plugs.ProviderLoader
+    plug Plugs.ClientAuthenticator
+    plug Plugs.EnsureAuthenticated, [:client]
+  end
+
+  pipeline :introspect do
+    plug Plugs.ProviderLoader
+    plug Plugs.ClientAuthenticator
+    plug Plugs.ResourceAuthenticator
+    plug Plugs.EnsureAuthenticated, [:client, :resource]
+  end
+
+  pipeline :consent do
+    plug Plugs.ProviderLoader
+    plug Plugs.AzTransitionCheck, stage: "consent", methods: ["GET"]
+    plug Plugs.EnsureAuthenticated, [:resource_owner]
+  end
+
+  pipeline :idrp do
+    plug Plugs.AzTransitionCheck, stage: "auth", methods: ["GET", "POST"]
+    plug Ueberauth
+  end
+
+  pipeline :signin do
+    plug Plugs.AzTransitionCheck, stage: "auth", methods: ["GET"]
+  end
+
+  scope "/as/v1/idp", NoaWeb do
+    pipe_through [:browser, :signin]
     get  "/signin", SigninController, :show_signin
     post "/signin", SigninController, :signin
   end
 
-  scope "/as", Noa.Web do
-    scope "/v1" do
-      scope "/:provider_id" do
-        pipe_through :provider_loader
+  scope "/as/v1/idrp", NoaWeb do
+    pipe_through [:browser, :idrp]
+    get "/:provider", IdrpController, :request
+    get "/:provider/callback", IdrpController, :callback
+  end
 
-        scope "/tokens" do
-          pipe_through :api
-          pipe_through :disable_resp_caching
+  scope "/as/v1/:provider_id", NoaWeb do
+    pipe_through [:browser, :consent]
+    get  "/consent", ConsentController, :show_consent
+    post "/consent", ConsentController, :consent
+  end
 
-          scope "/lookup" do
-            pipe_through :introspect_authenticator
-            post   "/", IntrospectController, :introspect
-          end
+  scope "/as/v1/:provider_id/authorize", NoaWeb do
+    pipe_through [:api, :authorize]
+    get "/", AuthorizeController, :authorize
+  end
 
-          scope "/issue" do
-            pipe_through :client_authenticator
-            post   "/",  IssueController, :issue
-          end
-        end
+  scope "/as/v1/:provider_id/issue", NoaWeb do
+    pipe_through [:api, :issue]
+    post   "/", IssueController, :issue
+  end
 
-        scope "/authorize", Authorize do
-          pipe_through [:api, :disable_resp_caching]
-
-          get "/", AzController, :authorize
-        end
-
-        scope "/consent" do
-          pipe_through [:browser, :disable_resp_caching, :ro_auth_guard]
-
-          get  "/", ConsentController, :show_consent
-          post "/", ConsentController, :consent
-        end
-      end
-    end
-
-    scope "/", Noa.Web do
-      pipe_through [:browser, :disable_resp_caching]
-      get  "/", PageController, :index
-    end
+  scope "/as/v1/:provider_id/introspect", NoaWeb do
+    pipe_through [:api, :introspect]
+    post   "/", IntrospectController, :introspect
   end
 end

@@ -1,10 +1,10 @@
-defmodule Noa.Web.UserSocket do
+defmodule NoaWeb.UserSocket do
   @moduledoc false
 
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", Noa.Web.RoomChannel
+  # channel "room:*", NoaWeb.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -32,7 +32,7 @@ defmodule Noa.Web.UserSocket do
   # Would allow you to broadcast a "disconnect" event and terminate
   # all active sockets and channels for a given user:
   #
-  #     Noa.Web.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
+  #     NoaWeb.Endpoint.broadcast("user_socket:#{user.id}", "disconnect", %{})
   #
   # Returning `nil` makes this socket anonymous.
   def id(_socket), do: nil

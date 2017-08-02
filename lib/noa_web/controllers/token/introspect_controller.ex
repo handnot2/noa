@@ -1,11 +1,11 @@
-defmodule Noa.Web.IntrospectController do
+defmodule NoaWeb.IntrospectController do
   @moduledoc false
 
-  use Noa.Web, :controller
-  action_fallback Noa.Web.FallbackController
+  use NoaWeb, :controller
+  action_fallback NoaWeb.FallbackController
 
   alias Noa.Tokens.{Scopes}
-  alias Noa.Web.{TokenUtils}
+  alias NoaWeb.{TokenUtils}
 
   def introspect(conn, %{} = attrs) do
     noa_ctxt = Map.get(conn.assigns, :noa_ctxt)

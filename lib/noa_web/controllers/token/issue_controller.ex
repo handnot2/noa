@@ -1,12 +1,12 @@
-defmodule Noa.Web.IssueController do
+defmodule NoaWeb.IssueController do
   @moduledoc false
 
-  use Noa.Web, :controller
-  action_fallback Noa.Web.FallbackController
+  use NoaWeb, :controller
+  action_fallback NoaWeb.FallbackController
 
   alias Noa.Tokens.{StubHandler, Scopes, AC, AT, RT}
   alias Noa.{Actors.Registrar, Tokens}
-  alias Noa.Web.{TokenUtils}
+  alias NoaWeb.{TokenUtils}
 
   def issue(conn, %{} = attrs) do
     case issue_(conn, attrs) do

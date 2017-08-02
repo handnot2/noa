@@ -1,4 +1,4 @@
-defmodule Noa.Web.Plugs.ClientAuthenticator do
+defmodule NoaWeb.Plugs.ClientAuthenticator do
   @moduledoc false
 
   import Plug.Conn

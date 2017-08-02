@@ -1,13 +1,13 @@
-defmodule Noa.Web.ChangesetView do
+defmodule NoaWeb.ChangesetView do
   @moduledoc false
 
-  use Noa.Web, :view
+  use NoaWeb, :view
 
   @doc """
   Traverses and translates changeset errors.
 
   See `Ecto.Changeset.traverse_errors/2` and
-  `Noa.Web.ErrorHelpers.translate_error/1` for more details.
+  `NoaWeb.ErrorHelpers.translate_error/1` for more details.
   """
   def translate_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)

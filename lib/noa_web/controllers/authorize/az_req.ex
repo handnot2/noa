@@ -1,4 +1,4 @@
-defmodule Noa.Web.Authorize.AzReq do
+defmodule NoaWeb.AuthorizeReq do
   @moduledoc false
 
   use Ecto.Schema
@@ -21,7 +21,7 @@ defmodule Noa.Web.Authorize.AzReq do
   @optional_fields [:redirect_uri, :scope, :state]
 
   def authorize_cs(%{} = params, %{} = noa_ctxt) do
-    %Noa.Web.Authorize.AzReq{}
+    %NoaWeb.AuthorizeReq{}
     |>  cast(params, @required_fields ++ @optional_fields)
     |>  validate_required(@required_fields)
     |>  validate_inclusion(:response_type, ["code", "token"])

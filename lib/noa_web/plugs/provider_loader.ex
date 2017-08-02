@@ -1,4 +1,4 @@
-defmodule Noa.Web.Plugs.ProviderLoader do
+defmodule NoaWeb.Plugs.ProviderLoader do
   @moduledoc false
 
   import Plug.Conn
@@ -14,7 +14,7 @@ defmodule Noa.Web.Plugs.ProviderLoader do
       _ ->
         conn
         |>  put_resp_header("content-type", "application/json")
-        |>  send_resp(400, ~s({"error": "invalid_request"}))
+        |>  send_resp(400, ~s({"error": "invalid_request", "error_description": "unknown_provider"}))
         |>  halt()
     end
   rescue

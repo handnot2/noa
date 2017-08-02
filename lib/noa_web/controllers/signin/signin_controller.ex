@@ -1,19 +1,20 @@
-defmodule Noa.Web.SigninController do
-  use Noa.Web, :controller
+defmodule NoaWeb.SigninController do
+  @moduledoc false
+
+  use NoaWeb, :controller
 
   import Ecto.Changeset
-  alias Noa.Web.{SigninReq}
+  alias NoaWeb.{SigninReq}
 
   def show_signin(conn, %{} = params) do
     # make sure that there is already a session with OAuth2 authroize request information
-    cs = SigninReq.show_signin_cs(params)
+    cs = SigninReq.show_signin_cs(params, get_session(conn, "x-noa-az-state-auth"))
     if cs.valid? do
       conn
       |>  put_resp_header("x-csrf-token", get_csrf_token())
       |>  put_status(200)
       |>  render("signin.html", params: params)
     else
-      IO.inspect(cs, label: "show_signin")
       conn
       |>  put_status(403)
       |>  json(%{error: :forbidden, tag: "nsc-1"})

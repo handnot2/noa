@@ -1,22 +1,25 @@
-defmodule Noa.Web.Authorize.AzController do
-  use Noa.Web, :controller
-  action_fallback Noa.Web.FallbackController
+defmodule NoaWeb.AuthorizeController do
+  @moduledoc false
 
-  import Noa.Web.Router.Helpers, only: [consent_path: 3]
-  alias Noa.Web.Authorize.AzReq
+  use NoaWeb, :controller
+  action_fallback NoaWeb.FallbackController
+
+  import NoaWeb.Router.Helpers, only: [consent_path: 3]
+  alias NoaWeb.AuthorizeReq
 
   def authorize(conn, %{} = params) do
     noa_ctxt = Map.get(conn.assigns, :noa_ctxt)
-    cs = AzReq.authorize_cs(params, noa_ctxt)
+    cs = AuthorizeReq.authorize_cs(params, noa_ctxt)
     if cs.valid? do
       consent_state = gen_consent_state()
       provider = noa_ctxt[:provider]
-      consent_uri = consent_path(Noa.Web.Endpoint, :show_consent, provider.id)
+      consent_uri = consent_path(NoaWeb.Endpoint, :show_consent, provider.id)
       conn
       |>  fetch_session()
       |>  configure_session(renew: true)
       |>  put_session("x-noa-authz-req-data", cs.changes)
-      |>  put_resp_cookie("x-noa-az-consent-state", consent_state)
+      |>  put_session("x-noa-az-stage", "consent")
+      |>  put_session("x-noa-az-state-consent", consent_state)
       |>  redirect(to: consent_uri <> "?state=#{consent_state}")
     else
       # TODO: proper error handling

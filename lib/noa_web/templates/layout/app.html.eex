@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="sm">
 
-    <title>Login</title>
+    <title>Noa</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
     <!--
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
