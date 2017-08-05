@@ -5,15 +5,15 @@ defmodule NoaWeb.NoaStrategy do
 
   alias Plug.Conn
   alias Ueberauth.Auth.{Info, Credentials, Extra}
-  import NoaWeb.Router.Helpers, only: [signin_url: 2, idrp_url: 3]
+  import NoaWeb.Router.Helpers, only: [signin_path: 2, idrp_path: 3]
 
   def handle_request!(%Conn{} = conn) do
     idrp_state = conn.params["state"]
     authz_req_data = Conn.get_session(conn, "x-noa-authz-req-data")
     if authz_req_data do
-      signin_url = signin_url(NoaWeb.Endpoint, :show_signin)
-      target_url = idrp_url(NoaWeb.Endpoint, :callback, "noa")
-      redirect_to = signin_url <> "?state=#{idrp_state}&target_url=#{target_url}"
+      signin_path = signin_path(NoaWeb.Endpoint, :show_signin)
+      target_path = idrp_path(NoaWeb.Endpoint, :callback, "noa")
+      redirect_to = signin_path <> "?state=#{idrp_state}&target_url=#{target_path}"
       conn
       |>  redirect!(URI.encode(redirect_to))
     else

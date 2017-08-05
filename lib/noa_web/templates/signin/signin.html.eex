@@ -1,8 +1,11 @@
 <div class="login-box">
   <form method="POST"
         style="margin: auto;"
-        action="<%= NoaWeb.Router.Helpers.signin_path(NoaWeb.Endpoint, :signin) %>">
-    <div class="row"><h4 style="text-align: center;">Login</h4></div>
+        action="<%= @signin_path %>">
+    <h4 style="text-align: center; margin-bottom: 0.2rem;">Sign in to Noa</h4>
+    <p style="text-align: center;">
+      to continue to <span class="grantee"><%= @client_name %></span>
+    </p>
     <div class="row">
       <label for="username">Username</label>
       <input class="u-full-width"
@@ -13,7 +16,7 @@
     <div class="row">
       <label for="pswd">Password</label>
       <input class="u-full-width" placeholder="password..."
-             name="pswd" id="pswd" type="password">
+             name="pswd" id="pswd" type="password" autocomplete="off">
       <input type="hidden" name="_csrf_token"
              value="<%= get_csrf_token() %>">
       <input type="hidden" name="target_url"
