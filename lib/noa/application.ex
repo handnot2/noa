@@ -16,6 +16,7 @@ defmodule Noa.Application do
       supervisor(Noa.Repo, []),
       # Start the endpoint when the application starts
       supervisor(NoaWeb.Endpoint, []),
+      worker(Noa.ROProviders.QuickstartProvider, [[name: :noa_ro_provider]]),
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

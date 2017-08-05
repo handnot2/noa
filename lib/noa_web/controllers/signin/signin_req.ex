@@ -38,10 +38,10 @@ defmodule NoaWeb.SigninReq do
 
   defp validate_creds(%CS{valid?: false} = cs), do: cs
   defp validate_creds(%CS{} = cs) do
-    user_adapter = get_user_adapter()
+    ro_provider = get_ro_provider()
     username = get_change(cs, :username)
     pswd     = get_change(cs, :pswd)
-    case apply(user_adapter, :get_by_creds, [username, pswd]) do
+    case apply(ro_provider, :get_by_creds, [username, pswd]) do
       {:ok, user_info} ->
         cs |> put_change(:user_info, user_info)
       {:error, :invalid_creds} ->
@@ -51,13 +51,8 @@ defmodule NoaWeb.SigninReq do
     end
   end
 
-  defp get_user_adapter(), do: SigninReq
-
-  def get_by_creds(username, pswd) do
-    if username == "aloha@mahalo.net" && pswd == "mahalo" do
-      {:ok, %{"username" => username}}
-    else
-      {:error, :invalid_creds}
-    end
+  defp get_ro_provider() do
+    opts = Application.get_env(:noa, :resource_owners, [])
+    opts[:provider]
   end
 end

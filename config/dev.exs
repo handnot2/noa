@@ -58,13 +58,17 @@ config :noa, Noa.Repo,
   adapter: Ecto.Adapters.Postgres,
   username: "postgres",
   password: "postgres",
-  database: "db",
+  database: "postgres",
   hostname: "localhost",
   pool_size: 10
 
 config :noa, :stubhandler,
   handler: Noa.Tokens.OpaqueStubHandler,
   options: [secret: "ju_KNtKy1rmhTnyzlTx3R9QCAJFcJOpNjxOHRpgxbUw"]
+
+config :noa, :resource_owners,
+  provider: Noa.ROProviders.QuickstartProvider,
+  options: [creds_file: "ro_quickstart.creds"]
 
 config :comeonin,
   bcrypt_log_rounds: 10,
