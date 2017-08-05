@@ -1,7 +1,7 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.6.5-alpha"
+  @version "0.6.6-alpha"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
 
@@ -45,7 +45,7 @@ defmodule Noa.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.1"},
       {:ueberauth, "~> 0.4"},
-      {:yaml_elixir, "~> 1.3", only: [:dev, :test]},
+      {:yaml_elixir, "~> 1.3"},
       {:excoveralls, "~> 0.6", only: :test},
       {:ex_doc, "~> 0.16", only: :dev},
       {:mix_docker, "~> 0.5",}

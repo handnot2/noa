@@ -24,8 +24,8 @@ tags
 /config/*.secret.exs
 
 npm-debug.log
+/ro_quickstart.creds
 /db
 /assets/node_modules
 /priv/static
 /priv/ssl
-/rel
