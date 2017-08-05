@@ -8,9 +8,8 @@ defmodule Noa.Tokens.CCGrant do
   @spec issue_access_token(map) :: {:ok, AT.t, nil | RT.t} | {:error, atom}
   def issue_access_token(%{provider_id: provider_id, client_id: client_id,
         scope: scope}) do
-    scope_master_list = provider_id
-    |>  Providers.lookup()
-    |>  Scopes.get_all()
+    provider = Providers.lookup(provider_id)
+    scope_master_list = Scopes.get_all(provider)
 
     computed_scope = scope
     |>  String.split()
@@ -21,7 +20,8 @@ defmodule Noa.Tokens.CCGrant do
     attrs = %{
       "provider_id" => provider_id,
       "issued_to" => client_id,
-      "scope" => computed_scope
+      "scope" => computed_scope,
+      "expires_in" => provider.access_token_ttl
     }
     case attrs |> transaction_ops() |> Repo.transaction() do
       {:ok, %{access_token: atoken}} -> {:ok, atoken, nil}

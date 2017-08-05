@@ -2,7 +2,7 @@ defmodule Noa.Tokens.AccessTokenTest do
   use Noa.DataCase
 
   alias Ecto.{UUID}
-  alias Noa.Actors.{Registrar}
+  alias Noa.Actors.{Registrar, Providers}
   alias Noa.Tokens.{AC, AT, RT}
   alias Noa.{Tokens}
   import Noa.{NoaHelper}
@@ -18,11 +18,11 @@ defmodule Noa.Tokens.AccessTokenTest do
   end
 
   defp access_token_from_acgrant(pr, cl, res_owner) do
-    {:ok, atoken, _} =
+    {:ok, atoken, rtoken} =
       claims(pr, cl, res_owner)
       |>  authorization_code()
       |>  Registrar.issue_access_token()
-    atoken
+    {atoken, rtoken}
   end
 
   test "issue - client_credentials_grant", ctxt do
@@ -31,10 +31,31 @@ defmodule Noa.Tokens.AccessTokenTest do
     assert atoken.refresh_token_id == nil
   end
 
+  test "issue - client_credentials_grant - check ttl", ctxt do
+    ttls = %{"access_token_ttl" => 100, "refresh_token_ttl" => 200}
+    {:ok, pr} = pr1(ctxt) |> Providers.update(ttls)
+    atoken = access_token_from_ccgrant(pr, cl1(ctxt), "p1_read rs1:perm1")
+    assert atoken.authz_code_id == nil
+    assert atoken.refresh_token_id == nil
+    assert Tokens.expires_in(atoken) == 100
+  end
+
   test "issue - authorization_code_grant", ctxt do
-    atoken = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
+    {atoken, _rtoken} = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
     refute atoken.issued_to == nil
     refute atoken.refresh_token_id == nil
+
+    assert %AC{exchanged_on: %DateTime{}} = Tokens.lookup(AC, atoken.authz_code_id)
+  end
+
+  test "issue - authorization_code_grant - ttl check", ctxt do
+    ttls = %{"access_token_ttl" => 100, "refresh_token_ttl" => 200}
+    {:ok, pr} = pr1(ctxt) |> Providers.update(ttls)
+    {atoken, rtoken} = access_token_from_acgrant(pr, cl1(ctxt), "rs1owner")
+    refute atoken.issued_to == nil
+    refute atoken.refresh_token_id == nil
+    assert Tokens.expires_in(rtoken) == 200
+    assert Tokens.expires_in(atoken) == 100
 
     assert %AC{exchanged_on: %DateTime{}} = Tokens.lookup(AC, atoken.authz_code_id)
   end
@@ -46,7 +67,7 @@ defmodule Noa.Tokens.AccessTokenTest do
   end
 
   test "revoke - authorization_code_grant", ctxt do
-    atoken = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
+    {atoken, _rtoken} = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
     assert atoken.revoked_on == nil
     assert {:ok, %AT{revoked_on: %DateTime{}}} = Registrar.revoke_access_token(atoken)
     assert %RT{revoked_on: nil} = Tokens.lookup(RT, atoken.refresh_token_id)
@@ -58,7 +79,7 @@ defmodule Noa.Tokens.AccessTokenTest do
   end
 
   test "lookup - authorization_code_grant", ctxt do
-    atoken = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
+    {atoken, _rtoken} = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
     assert %AT{issued_on: %DateTime{}, revoked_on: nil} = Tokens.lookup(AT, atoken.id)
   end
 
@@ -72,7 +93,7 @@ defmodule Noa.Tokens.AccessTokenTest do
   end
 
   test "delete - authorization_code_grant", ctxt do
-    atoken = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
+    {atoken, _rtoken} = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
     assert Tokens.delete(atoken)
   end
 
@@ -83,7 +104,7 @@ defmodule Noa.Tokens.AccessTokenTest do
   end
 
   test "delete deleted - authorization_code_grant", ctxt do
-    atoken = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
+    {atoken, _rtoken} = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
     assert Tokens.delete(atoken)
     assert_raise Ecto.StaleEntryError, fn -> Tokens.delete(atoken) end
   end
@@ -101,7 +122,7 @@ defmodule Noa.Tokens.AccessTokenTest do
   end
 
   test "reap - authorization_code_grant", ctxt do
-    atoken = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
+    {atoken, _rtoken} = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
     expired_on_or_before = relative_to_utc(60 * 60 * 1000, :later)
     assert {:ok, count} = Tokens.reap(AT, expired_on_or_before: expired_on_or_before)
     assert count > 0

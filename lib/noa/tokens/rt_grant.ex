@@ -2,6 +2,7 @@ defmodule Noa.Tokens.RTGrant do
   @moduledoc false
 
   alias Ecto.Multi
+  alias Noa.Actors.{Providers}
   alias Noa.Tokens.{AT, RT}
   alias Noa.{Repo}
 
@@ -14,12 +15,14 @@ defmodule Noa.Tokens.RTGrant do
   end
 
   defp transaction_ops(%RT{} = token) do
+    provider = Providers.lookup(token.provider_id)
     attrs = %{
       "provider_id" => token.provider_id,
       "issued_to" => token.issued_to,
       "authz_code_id" => token.authz_code_id,
       "refresh_token_id" => token.id,
       "scope" => token.scope,
+      "access_token_ttl" => provider.access_token_ttl
     }
 
     cs = %AT{} |> AT.create_cs(attrs, %{grant_type: :refresh_token})

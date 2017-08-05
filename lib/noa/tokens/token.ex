@@ -24,7 +24,7 @@ defmodule Noa.Tokens.Token do
 
       defp add_expires_on(cs, %{} = attrs) do
         issued_on_unix = cs |> get_change(:issued_on) |> DateTime.to_unix()
-        expires_in = Map.get(attrs, "expires_in", 5 * 60)
+        expires_in = Map.get(attrs, "expires_in") || Map.get(attrs, :expires_in) || 5 * 60
         expires_on_utc = DateTime.from_unix!(issued_on_unix + expires_in)
         cs |> put_change(:expires_on, expires_on_utc)
       end

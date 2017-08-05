@@ -14,9 +14,8 @@ defmodule Noa.Tokens.ACGrant do
   end
 
   defp transaction_ops(%AC{} = code) do
-    scope_master_list = code.provider_id
-    |>  Providers.lookup()
-    |>  Scopes.get_all()
+    provider = Providers.lookup(code.provider_id)
+    scope_master_list = Scopes.get_all(provider)
 
     computed_scope = code.scope
     |>  String.split()
@@ -24,8 +23,8 @@ defmodule Noa.Tokens.ACGrant do
     |>  MapSet.intersection(scope_master_list)
     |>  Enum.join(" ")
 
-    attrs = %{provider_id: code.provider_id, issued_to: code.issued_to,
-              authz_code_id: code.id,  scope: computed_scope}
+    attrs = %{provider_id: code.provider_id, issued_to: code.issued_to, authz_code_id: code.id,
+              scope: computed_scope, expires_in: provider.refresh_token_ttl}
     cs = %RT{} |> RT.create_cs(attrs)
     Multi.new()
     |> Multi.insert(:refresh_token, cs)
@@ -40,6 +39,7 @@ defmodule Noa.Tokens.ACGrant do
           authz_code_id: token.authz_code_id,
           refresh_token_id: token.id,
           scope: token.scope,
+          expires_in: provider.access_token_ttl
         }
         %AT{} |> AT.create_cs(attrs, %{grant_type: :authorization_code}) |> Repo.insert()
        end)
