@@ -77,13 +77,8 @@ defmodule NoaWeb.Endpoint do
     case port(System.get_env("SSL_PORT")) do
       :undefined -> []
       {:error, :invalid} -> raise "Error: Invalid SSL_PORT"
-      {:ok, port} ->
-        app_dir = Application.app_dir(:noa)
-        keyfile = Path.join([app_dir, "priv", "ssl", "key.pem"])
-        certfile = Path.join([app_dir, "priv", "ssl", "cert.pem"])
-        cacertfile = Path.join([app_dir, "priv", "ssl", "cacert.pem"])
-        [port: port, keyfile: keyfile, certfile: certfile] ++
-          if File.exists?(cacertfile), do: [cacertfile: cacertfile], else: []
+      {:ok, _port} ->
+        Application.get_env(:noa, :ssl_config, [])
     end
   end
 
