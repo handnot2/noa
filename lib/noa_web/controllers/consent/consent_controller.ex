@@ -19,7 +19,7 @@ defmodule NoaWeb.ConsentController do
 
     with  :ok <- stage_match(get_stage(conn)),
           :ok <- provider_match(noa_ctxt, provider),
-          {:ok, approval_scope_set} <- scope_for_approval(provider, scope_set, true)
+          {:ok, approval_scope_set} <- scope_for_approval(provider, scope_set, false)
     do
       posturi = consent_path(NoaWeb.Endpoint, :show_consent, provider.id)
       approval_scope = approval_scope_set |> MapSet.to_list() |> Enum.join(" ")
@@ -101,8 +101,6 @@ defmodule NoaWeb.ConsentController do
   defp cleanup_session(conn) do
     conn
     |>  configure_session(drop: true)
-    # |>  delete_session("x-noa-az-ro")
-    # |>  delete_session("x-noa-authz-req-data")
   end
 
   defp gen_code_token(conn, %{response_type: "code"} = reqdata) do
