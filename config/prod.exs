@@ -64,4 +64,29 @@ config :phoenix, :serve_endpoints, true
 
 # Finally import the config/prod.secret.exs
 # which should be versioned separately.
-import_config "prod.secret.exs"
+#import_config "prod.secret.exs"
+
+config :noa, Noa.Repo,
+  adapter: Ecto.Adapters.Postgres,
+  username: "${DB_USER}",
+  password: "${DB_PASSWORD}",
+  database: "${DB_NAME}",
+  hostname: "${DB_HOST}",
+  pool_size: 10
+
+config :noa, :stubhandler,
+  handler: Noa.Tokens.OpaqueStubHandler,
+  options: [secret: "juXKNtKy1rmhTnyzlTx3R9QCAJFcJOpNjxOHRpgxbUw"]
+
+config :noa, :ssl_config,
+  port:     "${SSL_PORT}",
+  keyfile:  "${NOA_SSL_KEY_PATH}",
+  certfile: "${NOA_SSL_CERT_PATH}"
+
+config :noa, :resource_owners,
+  provider: Noa.ROProviders.QuickstartProvider,
+  options: [creds_file: "${NOA_RO_QUICKSTART_CREDS_FILE}"]
+
+config :comeonin,
+  bcrypt_log_rounds: 10,
+  pbkdf2_rounds: 100_000
