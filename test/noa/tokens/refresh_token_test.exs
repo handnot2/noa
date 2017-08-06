@@ -22,7 +22,7 @@ defmodule Noa.Tokens.RefreshTokenTest do
   test "revoke", ctxt do
     {_atoken, rtoken} = issue_tokens(pr1(ctxt), cl1(ctxt), "rs1owner")
     assert rtoken.revoked_on == nil
-    assert {:ok, %RT{revoked_on: %DateTime{}}} = Registrar.revoke_refresh_token(rtoken)
+    assert {:ok, %RT{revoked_on: %DateTime{}}} = Registrar.revoke(rtoken)
   end
 
   test "lookup", ctxt do

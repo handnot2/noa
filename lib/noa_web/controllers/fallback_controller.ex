@@ -9,6 +9,7 @@ defmodule NoaWeb.FallbackController do
     invalid_grant: 400,
     unsupported_grant_type: 400,
     unsupported_response_type: 400,
+    unsupported_token_type: 400,
     store_failure: 500,
     server_error: 500,
     temporarily_unavailable: 503,

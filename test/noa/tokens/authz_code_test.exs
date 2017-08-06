@@ -17,7 +17,7 @@ defmodule Noa.Tokens.AuthzCodeTest do
 
   test "revoke code", ctxt do
     code = issue_code(pr1(ctxt), cl1(ctxt), "rs1owner")
-    assert {:ok, %AC{revoked_on: %DateTime{}}} = Registrar.revoke_authorization_code(code)
+    assert {:ok, %AC{revoked_on: %DateTime{}}} = Registrar.revoke(code)
   end
 
   test "lookup code", ctxt do

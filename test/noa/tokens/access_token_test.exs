@@ -63,13 +63,13 @@ defmodule Noa.Tokens.AccessTokenTest do
   test "revoke - client_credentials_grant", ctxt do
     atoken = access_token_from_ccgrant(pr1(ctxt), cl1(ctxt), "p1_read rs1:perm1")
     assert atoken.revoked_on == nil
-    assert {:ok, %AT{revoked_on: %DateTime{}}} = Registrar.revoke_access_token(atoken)
+    assert {:ok, %AT{revoked_on: %DateTime{}}} = Registrar.revoke(atoken)
   end
 
   test "revoke - authorization_code_grant", ctxt do
     {atoken, _rtoken} = access_token_from_acgrant(pr1(ctxt), cl1(ctxt), "rs1owner")
     assert atoken.revoked_on == nil
-    assert {:ok, %AT{revoked_on: %DateTime{}}} = Registrar.revoke_access_token(atoken)
+    assert {:ok, %AT{revoked_on: %DateTime{}}} = Registrar.revoke(atoken)
     assert %RT{revoked_on: nil} = Tokens.lookup(RT, atoken.refresh_token_id)
   end
 

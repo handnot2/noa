@@ -35,6 +35,13 @@ defmodule NoaWeb.Router do
     plug Plugs.EnsureAuthenticated, [:client, :resource]
   end
 
+  pipeline :revoke do
+    plug Plugs.ProviderLoader
+    plug Plugs.ClientAuthenticator
+    plug Plugs.ResourceAuthenticator
+    plug Plugs.EnsureAuthenticated, [:client, :resource]
+  end
+
   pipeline :consent do
     plug Plugs.ProviderLoader
     plug Plugs.AzTransitionCheck, stage: "consent", methods: ["GET"]
@@ -81,5 +88,10 @@ defmodule NoaWeb.Router do
   scope "/as/v1/:provider_id/introspect", NoaWeb do
     pipe_through [:api, :introspect]
     post   "/", IntrospectController, :introspect
+  end
+
+  scope "/as/v1/:provider_id/revoke", NoaWeb do
+    pipe_through [:api, :revoke]
+    post   "/", RevokeController, :revoke
   end
 end

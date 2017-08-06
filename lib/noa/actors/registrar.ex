@@ -21,11 +21,14 @@ defmodule Noa.Actors.Registrar do
   end
 
   @doc false
-  def revoke_authorization_code(%AC{} = code), do: Tokens.revoke(code)
+  def revoke(%AC{} = code),  do: Tokens.revoke(code)
+  def revoke(%AT{} = token), do: Tokens.revoke(token)
+  def revoke(%RT{} = token), do: Tokens.revoke(token)
 
   @doc false
-  def revoke_access_token(%AT{} = token), do: Tokens.revoke(token)
-
-  @doc false
-  def revoke_refresh_token(%RT{} = token), do: Tokens.revoke(token)
+  @spec lookup(binary, binary) :: nil | AC.t | AT.t | RT.t | {:error, :atom}
+  def lookup(id, "authorization_code"), do: Tokens.lookup(AC, id)
+  def lookup(id, "access_token"), do: Tokens.lookup(AT, id)
+  def lookup(id, "refresh_token"), do: Tokens.lookup(RT, id)
+  def lookup(_, _), do: {:error, :unsupported_token_type}
 end

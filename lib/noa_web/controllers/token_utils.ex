@@ -9,6 +9,7 @@ defmodule NoaWeb.TokenUtils do
   def get_validated_token(stub, "authorization_code" = tt), do: get_token_by_stub(AC, tt, stub)
   def get_validated_token(stub, "access_token" = tt), do: get_token_by_stub(AT, tt, stub)
   def get_validated_token(stub, "refresh_token" = tt), do: get_token_by_stub(RT, tt, stub)
+  def get_validated_token(_, _), do: {:error, :unsupported_token_type}
 
   @doc false
   def check_validity_period(token), do: cvp_result(Tokens.validity_period_status(token))
