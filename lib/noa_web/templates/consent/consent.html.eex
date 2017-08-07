@@ -1,4 +1,5 @@
 <div class="consent-box">
+  <div class="ribbon"><span>alpha</span></div>
   <div class="row">
     <form method="POST"
           style="margin: auto;"

@@ -1,4 +1,5 @@
 <div class="login-box">
+  <div class="ribbon"><span>alpha</span></div>
   <form method="POST"
         style="margin: auto;"
         action="<%= @signin_path %>">
