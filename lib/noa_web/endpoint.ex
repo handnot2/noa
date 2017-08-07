@@ -36,7 +36,8 @@ defmodule NoaWeb.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_noa_key",
-    signing_salt: "1WtpgHQ0"
+    max_age: 60 * 60,
+    signing_salt: System.get_env("NOA_SIGNING_SALT") || "1WtpgHQ0"
 
   plug NoaWeb.Router
 
@@ -49,8 +50,9 @@ defmodule NoaWeb.Endpoint do
   """
   def init(_key, config) do
     if config[:load_from_system_env] do
-      if System.get_env("PORT") == nil && System.get_env("SSL_PORT") == nil do
-        raise "Error: Port missing - define env var PORT and/or SSL_PORT"
+      if System.get_env("NOA_PORT") == nil &&
+          System.get_env("NOA_SSL_PORT") == nil do
+        raise "Error: Port missing - define env var NOA_PORT and/or NOA_SSL_PORT"
       end
 
       host = System.get_env("NOA_HOST") || "localhost"
@@ -66,17 +68,17 @@ defmodule NoaWeb.Endpoint do
   end
 
   defp http_config!() do
-    case port(System.get_env("PORT")) do
+    case port(System.get_env("NOA_PORT")) do
       :undefined -> []
-      {:error, :invalid} -> raise "Error: Invalid PORT"
+      {:error, :invalid} -> raise "Error: Invalid NOA_PORT"
       {:ok, port} -> [:inet6, port: port]
     end
   end
 
   defp https_config!() do
-    case port(System.get_env("SSL_PORT")) do
+    case port(System.get_env("NOA_SSL_PORT")) do
       :undefined -> []
-      {:error, :invalid} -> raise "Error: Invalid SSL_PORT"
+      {:error, :invalid} -> raise "Error: Invalid NOA_SSL_PORT"
       {:ok, _port} ->
         Application.get_env(:noa, :ssl_config, [])
     end

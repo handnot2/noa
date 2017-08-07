@@ -7,7 +7,7 @@ use Mix.Config
 # watchers to your application. For example, we use it
 # with brunch.io to recompile .js and .css sources.
 config :noa, NoaWeb.Endpoint,
-  http: [port: 5008],
+  http: [port: 4000],
   #https: [
     #port: 4443,
     #otp_app: :noa,
