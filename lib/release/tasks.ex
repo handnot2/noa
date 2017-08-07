@@ -10,13 +10,15 @@ defmodule NoaRelease.Tasks do
     unload_app()
   end
 
-  def seed(), do: seed([])
-  def seed(params) do
-    IO.puts("Seed params: #{inspect params}")
+  def seed() do
+    plain_args = :init.get_plain_arguments()
+    pwd = System.get_env("PWD")
+
     load_app()
-    demo_seed_data_path()
-    |>  NoaRelease.Seeder.seed()
-    |>  NoaRelease.Seeder.print_seed_data_ids()
+    plain_args
+    |>  Enum.map(fn file -> Path.absname(file, pwd) end)
+    |>  Enum.map(&NoaRelease.Seeder.seed/1)
+    |>  Enum.map(&NoaRelease.Seeder.print_seed_data_ids/1)
     unload_app()
   end
 
@@ -30,10 +32,6 @@ defmodule NoaRelease.Tasks do
 
   defp migration_path() do
     Path.join([:code.priv_dir(:noa), "repo", "migrations"])
-  end
-
-  defp demo_seed_data_path() do
-    System.get_env("NOA_SEED_DATA_FILE")
   end
 
   defp load_app() do

@@ -2,6 +2,7 @@ defmodule NoaRelease.Seeder do
   alias Noa.Actors.{Clients, Resources, Providers}
 
   def seed(data_file) do
+    IO.inspect(data_file, label: "Seeding from")
     ctxt = load_data_desc(data_file)
     |>  create_providers()
     |>  create_resources()

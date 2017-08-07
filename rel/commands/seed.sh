@@ -1,3 +1,5 @@
 #!/bin/sh
 
-bin/noa command Elixir.NoaRelease.Tasks seed
+shift
+echo bin/noa command Elixir.NoaRelease.Tasks seed $@
+bin/noa command Elixir.NoaRelease.Tasks seed $@

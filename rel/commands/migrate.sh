@@ -1,3 +1,5 @@
 #!/bin/sh
 
-bin/noa command Elixir.NoaRelease.Tasks migrate
+shift
+echo bin/noa command Elixir.NoaRelease.Tasks migrate $@
+bin/noa command Elixir.NoaRelease.Tasks migrate $@
