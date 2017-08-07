@@ -58,7 +58,7 @@ defmodule Noa.Actors.Provider do
   end
 
   defp gen_provider_id(cs) do
-    id = :crypto.strong_rand_bytes(16) |> Base.url_encode64(padding: false)
+    id = :crypto.strong_rand_bytes(20) |> Base.encode32(case: :lower)
     cs |> Changeset.put_change(:id, id)
   end
 end
