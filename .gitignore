@@ -24,8 +24,10 @@ tags
 /config/*.secret.exs
 
 npm-debug.log
-/ro_quickstart.creds
+/*.creds
 /db
 /assets/node_modules
-/priv/static
+/priv/static/*
 /priv/ssl
+/.sobelow
+/noa.tar.gz

@@ -3,3 +3,5 @@ deps
 doc
 assets/node_modules
 test
+Dockerfile.*
+docker-compose.yml
