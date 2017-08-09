@@ -78,10 +78,14 @@ config :noa, :stubhandler,
   handler: Noa.Tokens.OpaqueStubHandler,
   options: [secret: "${NOA_STUBHANDLER_SECRET}"]
 
+config :noa, :http_config,
+  [:inet6, port: "${NOA_PORT}"]
+
 config :noa, :ssl_config,
-  port:     "${NOA_SSL_PORT}",
-  keyfile:  "${NOA_SSL_KEY_PATH}",
-  certfile: "${NOA_SSL_CERT_PATH}"
+  port:       "${NOA_SSL_PORT}",
+  keyfile:    "${NOA_SSL_KEY_PATH}",
+  certfile:   "${NOA_SSL_CERT_PATH}",
+  cacertfile: "${NOA_SSL_CACERT_PATH}"
 
 config :noa, :resource_owners,
   provider: Noa.ROProviders.QuickstartProvider,

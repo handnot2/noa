@@ -37,7 +37,9 @@ defmodule NoaWeb.Endpoint do
     store: :cookie,
     key: "_noa_key",
     max_age: 60 * 60,
-    signing_salt: System.get_env("NOA_SIGNING_SALT") || "1WtpgHQ0"
+    http_only: true,
+    secure: true,
+    signing_salt: System.get_env("NOA_SESSION_SIGNING_SALT") || "1WtpgHQ0"
 
   plug NoaWeb.Router
 
@@ -49,46 +51,51 @@ defmodule NoaWeb.Endpoint do
   and must return the updated configuration.
   """
   def init(_key, config) do
-    if config[:load_from_system_env] do
-      if System.get_env("NOA_PORT") == nil &&
-          System.get_env("NOA_SSL_PORT") == nil do
-        raise "Error: Port missing - define env var NOA_PORT and/or NOA_SSL_PORT"
-      end
+    if config[:load_from_system_env], do: load_runtime_config!(config), else: {:ok, config}
+  end
 
-      host = System.get_env("NOA_HOST") || "localhost"
+  defp load_runtime_config!(config) do
+    host = System.get_env("NOA_HOST") || "localhost"
+    ssl_config  = ssl_config!()
+    http_config = http_config!()
 
-      config = [url: [host: host], http: http_config!(), https: https_config!()]
-      |>  Enum.reject(fn {_k, v} -> length(v) == 0 end)
-      |>  Enum.reduce(config, fn {k, v}, config -> Keyword.put(config, k, v) end)
-
-      {:ok, config}
-    else
-      {:ok, config}
+    if http_config == nil && ssl_config == nil do
+      raise "Error: Port missing - define env var NOA_PORT and/or NOA_SSL_PORT"
     end
+
+    config = config |> Keyword.put(:url, [host: host])
+    config = if ssl_config do
+      config |> Keyword.put(:https, ssl_config)
+    else
+      config |> Keyword.put(:http, http_config)
+    end
+
+    {:ok, config}
   end
 
   defp http_config!() do
-    case port(System.get_env("NOA_PORT")) do
-      :undefined -> []
-      {:error, :invalid} -> raise "Error: Invalid NOA_PORT"
-      {:ok, port} -> [:inet6, port: port]
+    case port!("NOA_PORT") do
+      :undefined -> nil
+      _port -> Application.get_env(:noa, :http_config, [])
     end
   end
 
-  defp https_config!() do
-    case port(System.get_env("NOA_SSL_PORT")) do
-      :undefined -> []
-      {:error, :invalid} -> raise "Error: Invalid NOA_SSL_PORT"
-      {:ok, _port} ->
-        Application.get_env(:noa, :ssl_config, [])
+  defp ssl_config!() do
+    case port!("NOA_SSL_PORT") do
+      :undefined -> nil
+      _port -> Application.get_env(:noa, :ssl_config, [])
     end
   end
 
-  defp port(nil), do: :undefined
-  defp port(value) do
-    case Integer.parse(value) do
-      {port, ""} when port > 0 -> {:ok, port}
-      _ -> {:error, :invalid}
+  defp port!(ev_name) do
+    ev_value = System.get_env(ev_name)
+    if ev_value do
+      case Integer.parse(ev_value || "") do
+        {port, ""} when port > 0 -> port
+        _ -> raise "Error: Invalid #{ev_name}"
+      end
+    else
+      :undefined
     end
   end
 end
