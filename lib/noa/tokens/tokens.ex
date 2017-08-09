@@ -34,6 +34,7 @@ defmodule Noa.Tokens do
   def reap(module, opts) when module in [AC, AT, RT] and is_list(opts) do
     exp = opts |> Keyword.get(:expired_on_or_before, DateTime.utc_now())
     limit = opts |> Keyword.get(:limit, @reap_chunk_size)
+    # need to clean this up
     q = "SELECT * FROM reap_#{module.__schema__(:source)}($1, $2)"
     case Repo |> SQL.query(q, [exp, limit]) do
       {:ok, %{num_rows: num_rows}} -> {:ok, num_rows}
