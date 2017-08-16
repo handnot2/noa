@@ -14,7 +14,7 @@ defmodule NoaWeb.ConsentController do
     provider     = Map.get(reqdata, :provider)
     client       = Map.get(reqdata, :client)
     redirect_uri = Map.get(reqdata, :redirect_uri)
-    scope        = Map.get(reqdata, :scope, "")
+    scope        = Map.get(reqdata, :scope) || client.scope || ""
     scope_set    = scope |> String.split() |> MapSet.new()
 
     with  :ok <- stage_match(get_stage(conn)),
