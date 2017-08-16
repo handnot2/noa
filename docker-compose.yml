@@ -1,0 +1,55 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.6.3-alpine
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    env_file:
+      - ${HOME}/.noa/noa.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${HOME}/.noa/pgdc/pgdata:/var/lib/postgresql/data
+  noa:
+    image: noa:release
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    env_file:
+      - ${HOME}/.noa/noa.env
+    environment:
+      - NOA_HOST=my.noa
+      - NOA_PORT=4000
+      #- NOA_SSL_PORT=4443
+      - NOA_SSL_KEY_PATH=/opt/app/ssl/noa_as.key
+      - NOA_SSL_CERT_PATH=/opt/app/ssl/noa_as.cert
+      - NOA_SSL_CACERT_PATH=/opt/app/ssl/noa_ca.cert
+      - NOA_DB_HOST=db
+      - NOA_DB_NAME=postgres
+      - NOA_DB_USER=postgres
+      - NOA_RO_QUICKSTART_CREDS_FILE=/opt/app/seeds/ro_quickstart.creds
+    ports:
+      - "4000:4000"
+      #- "4443:4443"
+    depends_on:
+      - db
+    links:
+      - db
+    volumes:
+      - ${HOME}/.noa/ssl:/opt/app/ssl
+      - ${HOME}/.noa/seeds:/opt/app/seeds
+    command: ["foreground"]
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - noa
+    links:
+      - noa
+    volumes:
+      - ${HOME}/.noa/nxdc/etc/nginx:/etc/nginx:ro
+      - ${HOME}/.noa/nxdc/var/log/nginx:/var/log/nginx
+      - ${HOME}/.noa/ssl:/ssl:ro
