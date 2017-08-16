@@ -1,7 +1,7 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.7.1-alpha"
+  @version "0.7.2-alpha"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
   @playground_url "https://github.com/handnot2/noa_playground"
@@ -49,7 +49,6 @@ defmodule Noa.Mixfile do
       {:yaml_elixir, "~> 1.3"},
       {:excoveralls, "~> 0.6", only: :test},
       {:ex_doc, "~> 0.16", only: :dev},
-      {:distillery, "~> 1.4.0", override: true},
       {:mix_docker, "~> 0.5",}
     ]
   end

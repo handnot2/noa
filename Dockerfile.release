@@ -1,6 +1,6 @@
 FROM alpine:3.6
 
-ENV REFRESHED_AT=2017-08-15 \
+ENV REFRESHED_AT=2017-08-16 \
     LANG=en_US.UTF-8 \
     HOME=/opt/app \
     TERM=xterm
@@ -12,8 +12,10 @@ RUN true \
   && echo "@edge http://nl.alpinelinux.org/alpine/edge/main" \
         >> /etc/apk/repositories \
   && apk --no-cache upgrade \
+  && apk add --no-cache bash \
   && apk add --no-cache pcre@edge \
-  && apk add --no-cache ca-certificates openssl ncurses zlib \
+  && apk add --no-cache ca-certificates openssl zlib \
+  && apk add --no-cache ncurses-libs ncurses-terminfo ncurses-terminfo-base \
   && update-ca-certificates --fresh
 
 WORKDIR ${HOME}
