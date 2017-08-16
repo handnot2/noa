@@ -17,14 +17,16 @@ defmodule NoaRelease.Seeder do
 
   def print_seed_data_ids(%{} = seed_result) do
     %{providers: prs, resources: rss, clients: cls} = seed_result
+    host = System.get_env("NOA_HOST") || "localhost"
+    port = System.get_env("NOA_PORT") || "4000"
+
     IO.puts("\n========= 8< =========\n")
-    IO.puts("Providers:")
+    IO.puts("Use the information shown here when working with Noa Playground.")
+    IO.puts("\nProviders:")
     prs
     |>  Enum.each(fn {n, v} ->
           IO.puts("\n#{n}: #{inspect v.id}")
-          IO.puts("   Authorize URI:  (GET) /as/v1/#{v.id}/authorize")
-          IO.puts("       Token URI: (POST) /as/v1/#{v.id}/issue")
-          IO.puts("  Introspect URI: (POST) /as/v1/#{v.id}/introspect")
+          IO.puts("  Provider URL: http://#{host}:#{port}/as/v1/#{v.id}")
         end)
     IO.puts("\nClients:\n")
     cls

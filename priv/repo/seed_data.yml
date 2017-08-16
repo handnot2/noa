@@ -30,22 +30,33 @@ clients:
     uris:
       - http://rs1client1.app/cb1
       - http://rs1client1.app/cb2
-      - http://localhost:5009/auth/noa/callback
+      - https://developers.google.com/oauthplayground
+      - https://www.getpostman.com/oauth2/callback
+      - http://localhost:4004/
 
   - name: rs2client2
     scope: p1_read rs2:perm2 rs2:perm3
     uris:
       - http://rs2client2.app/cb1
       - http://rs2client2.app/cb2
+      - https://developers.google.com/oauthplayground
+      - https://www.getpostman.com/oauth2/callback
+      - http://localhost:4004/
 
   - name: rs3client3
     scope: p2_read p2_write rs3:perm1 rs3:perm2
     uris:
       - http://rs3client3.app/cb1
       - http://rs3client3.app/cb2
+      - https://developers.google.com/oauthplayground
+      - https://www.getpostman.com/oauth2/callback
+      - http://localhost:4004/
 
   - name: rs4client4
     scope: p2_read rs4:perm2 rs4:perm3
     uris:
       - http://rs4client4.app/cb1
       - http://rs4client4.app/cb2
+      - https://developers.google.com/oauthplayground
+      - https://www.getpostman.com/oauth2/callback
+      - http://localhost:4004/
