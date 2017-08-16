@@ -1,9 +1,10 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.6.7-alpha"
+  @version "0.7.0-alpha"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
+  @playground_url "https://github.com/handnot2/noa_playground"
 
   def project do
     [app: :noa,
@@ -65,6 +66,7 @@ defmodule Noa.Mixfile do
       licenses: ["MIT"],
       links: %{
         "GitHub" => @source_url,
+        "OAuth2 Playground" => @playground_url,
       }
     ]
   end
