@@ -38,7 +38,8 @@ defmodule NoaWeb.Endpoint do
     key: "_noa_key",
     max_age: 60 * 60,
     http_only: true,
-    secure: true,
+    # TODO
+    #secure: true,
     signing_salt: System.get_env("NOA_SESSION_SIGNING_SALT") || "1WtpgHQ0"
 
   plug NoaWeb.Router
