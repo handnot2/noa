@@ -6,18 +6,18 @@ services:
       - 8.8.8.8
       - 8.8.4.4
     env_file:
-      - ${HOME}/.noa/noa.env
+      - ./noa.env
     ports:
       - "5432:5432"
     volumes:
-      - ${HOME}/.noa/pgdc/pgdata:/var/lib/postgresql/data
+      - ./pgdc/pgdata:/var/lib/postgresql/data
   noa:
     image: noa:release
     dns:
       - 8.8.8.8
       - 8.8.4.4
     env_file:
-      - ${HOME}/.noa/noa.env
+      - ./noa.env
     environment:
       - NOA_HOST=my.noa
       - NOA_PORT=4000
@@ -37,8 +37,8 @@ services:
     links:
       - db
     volumes:
-      - ${HOME}/.noa/ssl:/opt/app/ssl
-      - ${HOME}/.noa/seeds:/opt/app/seeds
+      - ./ssl:/opt/app/ssl
+      - ./seeds:/opt/app/seeds
     command: ["foreground"]
   nginx:
     image: nginx:alpine
@@ -50,6 +50,6 @@ services:
     links:
       - noa
     volumes:
-      - ${HOME}/.noa/nxdc/etc/nginx:/etc/nginx:ro
-      - ${HOME}/.noa/nxdc/var/log/nginx:/var/log/nginx
-      - ${HOME}/.noa/ssl:/ssl:ro
+      - ./nxdc/etc/nginx:/etc/nginx:ro
+      - ./nxdc/var/log/nginx:/var/log/nginx
+      - ./ssl:/ssl:ro

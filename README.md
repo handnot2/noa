@@ -64,15 +64,19 @@ available in as a request header in a proxy forward would work as well.
 
 ### Noa Playground
 
-There is a companion Github Repo [Noa Playground](https://github.com/handnot2/noa_playground). This is very
-similar to Google OAuth2 Playground. Once Noa is setup and running
+There is a companion Github Repo [Noa Playground](https://github.com/handnot2/noa_playground).
+This is very similar to Google OAuth2 Playground. Once Noa is setup and running
 you can use Noa Playground to try-out Authorization Code Grant flow
-end-to-end without writing any code! Make sure to get Noa installed before you follow the instructions on setting up the playground.
+end-to-end without writing any code!
+
+Make sure to get Noa installed before you follow the instructions on setting up the playground.
 
 ## Installation
 
 Make sure that you have Elixir 1.5.0/Erlang 20.0.x, Nodejs, npm
 and Docker installed.
+
+### Build Docker Image
 
 ```
 git clone https://github.com/handnot2/noa
@@ -90,26 +94,20 @@ sudo mix docker.release --no-cache
 > `docker.release` commands, insert `env "PATH=$PATH"` between sudo
 > and mix in the above commands.
 
-Continue with installation with the following commands:
+### Noa Installation using Docker Image
 
 ```
-./noa_docker_setup.sh
-```
-
-This will prompt you to make credential file for the end-user
-authentication. Just follow the simple instructions you see on the
-console. The next part is to prep the database with migration and
-seeding. (The database instance is automatically created from the
-earlier step.)
-
-```
+./noa_docker_init.sh ${HOME}/mynoa
+cd ${HOME}/mynoa
+vim seeds/ro_quickstart.creds
 ./noa_docker_seed.sh
 ```
 
-You will have to restart the Noa Docker Containers at the end.
-Console output from the above command will tell you exactly what to do.
+Checkout the `README.md` file in `${HOME}/mynoa` for instructions on
+`seeds/ro_quickstart.creds` file.
 
-At the end of this you will have a docker base instance of Noa running.
+At the end of this you will have a docker based instance of Noa running.
+From this point out, you simply use `docker-compose` to manage Noa.
 
 > Make sure to add
 >
@@ -117,5 +115,6 @@ At the end of this you will have a docker base instance of Noa running.
 >
 > To your `/etc/hosts` file.
 
-Once this done, you can quickly get `Noa Playground` (OAuth2 Playground)
-up and running to try out Noa.
+Head over to [Noa Playground](https://github.com/handnot2/noa_playground).
+Instructions over there show how to setup your own local OAuth2 Playground
+to work with Noa.

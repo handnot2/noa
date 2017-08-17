@@ -1,0 +1,53 @@
+# Noa OAuth2 Server Setup
+
+### Create Resource Owner Credentials file
+
+Edit `seeds/ro_quickstart.creds` file and add the end user
+credentials - one line per user. The format is `signin-name:password`.
+
+You might want to keep a copy of this somewhere else in case you end up
+recreating this Noa try-out setup.
+
+### Seed Noa Setup
+
+Before you can start using this setup, you need to bootstrap
+it with Ecto migration and a set of authorization providers,
+OAuth2 clients, definitions of protected resources
+(with scope and registered redirect URIs etc). The definitions are
+available in `seeds/demo_seed_data.yml` file.
+
+```
+./noa_docker_seed.sh
+```
+
+This will use docker-compose to bring up a Postgresql database, Noa
+and perform the seeding activities. Upon completion this creates
+`seed_output.txt` file. Keep this file around. It contains
+the authorization provider URLs and for OAuth2 client IDs.
+
+> OOTB the secret for the OAuth2 clients created during
+> this seeding process is the same as their name. You can
+> explicitly specify it by adding `client_secret: value`.
+> When you are initially trying out, simply go with the
+> OOTB setup and use the client name as the `client_secret`,
+> `rs1client1` for example.
+
+The OAuth2 clients in the `yml` file are already setup with
+callback `redirect_uri` for Noa Playground, Google OAuth2
+Playground as well as Postman.
+
+> http://localhost:4004
+> https://developers.google.com/oauthplayground
+> https://www.getpostman.com/oauth2/callback
+
+All setup ready to go.
+
+### Trying out this Noa instance
+
+You can setup your own OAuth2 Playground by following instructions in
+[Noa Playground](https://github.com/handnot2/noa_playground).
+
+### Getting rid of Noa setup
+
+First make sure that the docker containers are stopped and removed.
+Then use `sudo` to remove the Noa tryout directory.

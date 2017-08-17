@@ -1,7 +1,7 @@
 defmodule Noa.Mixfile do
   use Mix.Project
 
-  @version "0.7.2-alpha"
+  @version "0.7.3-alpha"
   @description "OAuth2"
   @source_url "https://github.com/handnot2/noa"
   @playground_url "https://github.com/handnot2/noa_playground"
